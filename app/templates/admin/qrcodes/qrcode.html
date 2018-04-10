@@ -1,0 +1,37 @@
+<!--app/templates/admin/qrcodes/qrcode.html-->
+<!--Wrap wtf.quickform in if add_qrcode or edit_qrcode -->
+<!-- table with name, description, content, edit, delete for search-->
+<!-- table with name, content, edit, delete for read -->
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+    {% if add_qrcode %}
+        Add QrCode
+    {% elif edit_qrcode %}
+        Edit QrCode
+    {% elif search_qrcode%}
+        Search QrCodes
+    {% endif %}
+{% endblock %}
+{% block body %}
+<div class="content-section">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <div class="center">
+                    {% if add_qrcode %}
+                        <h1>Add QrCode</h1>
+                    {% elif edit_qrcode %}
+                        <h1>Edit QrCode</h1>
+                    {% elif search_qrcode %}
+                        <h1>Search QrCodes</h1>
+                    {% endif %}
+                    <br /> 
+                    {{ wtf.quick_form(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}        

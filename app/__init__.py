@@ -1,6 +1,7 @@
 #app/__init__.py
 
 #Third-party imports
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -14,15 +15,22 @@ from config import app_config
 #Database variable initialization
 db = SQLAlchemy()
 login_manager = LoginManager()
-engine = create_engine('mysql://stQR_admin:stQR2018@localhost/stQR_db', convert_unicode=True)
+engine = create_engine('mysql://stqrdatabase:seniorProject@stqrdatabase.mysql.pythonanywhere-services.com/stqrdatabase$stqr_db', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
 
 def create_app(config_name):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object(app_config[config_name])
-    app.config.from_pyfile('config.py')
+    if os.getenv('FLASK_CONFIG') == "production":
+        app = Flask(__name__)
+        app.config.update(
+            SECRET_KEY=os.getenv('stqrdatabase2018')
+            SQLALCHEMY_DATABASE_URI=os.getenv('mysql://stqrdatabase:seniorProject@stqrdatabase.mysql.pythonanywhere-services.com/stqrdatabase$stqr_db')
+            )
+    else:
+        app = Flask(__name__, instance_relative_config=True)
+        app.config.from_object(app_config[config_name])
+        app.config.from_pyfile('config.py')
 
     db.init_app(app)
 
